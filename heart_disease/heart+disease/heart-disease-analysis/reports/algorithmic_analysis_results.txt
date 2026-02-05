@@ -1,0 +1,51 @@
+ALGORITHMIC ANALYSIS REPORT
+===========================
+
+1. HIGH RISK PATIENTS (Priority Queue)
+------------------------------------
+Patients identified as high priority for triage based on risk factors:
+
+ID 091: Risk Score 116.0
+   Details: Age 62.0, CP 4.0, Oldpeak 6.2, Thal 7.0
+
+ID 191: Risk Score 106.0
+   Details: Age 51.0, CP 4.0, Oldpeak 4.2, Thal 7.0
+
+ID 121: Risk Score 105.0
+   Details: Age 63.0, CP 4.0, Oldpeak 4.0, Thal 7.0
+
+ID 118: Risk Score 104.0
+   Details: Age 63.0, CP 4.0, Oldpeak 1.8, Thal 7.0
+
+ID 040: Risk Score 100.0
+   Details: Age 65.0, CP 4.0, Oldpeak 1.0, Thal 7.0
+
+ID 002: Risk Score 98.0
+   Details: Age 67.0, CP 4.0, Oldpeak 2.6, Thal 7.0
+
+ID 062: Risk Score 96.0
+   Details: Age 58.0, CP 4.0, Oldpeak 2.2, Thal 7.0
+
+ID 126: Risk Score 95.0
+   Details: Age 56.0, CP 4.0, Oldpeak 4.0, Thal 7.0
+
+ID 293: Risk Score 95.0
+   Details: Age 63.0, CP 4.0, Oldpeak 4.0, Thal 7.0
+
+ID 072: Risk Score 94.0
+   Details: Age 62.0, CP 4.0, Oldpeak 1.8, Thal 7.0
+
+
+2. PATIENT SIMILARITY CLUSTERS (Graph Theory)
+-------------------------------------------
+Total Clusters Found: 32
+Significant clusters (size > 1):
+
+Cluster 1 (Size: 713): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]...
+Cluster 2 (Size: 170): [597, 598, 599, 600, 601, 602, 603, 604, 605, 606]...
+Cluster 3 (Size: 3): [576, 802, 595]...
+Cluster 4 (Size: 2): [195, 823]...
+Cluster 5 (Size: 2): [475, 231]...
+Cluster 6 (Size: 2): [531, 566]...
+Cluster 7 (Size: 2): [592, 538]...
+Cluster 8 (Size: 2): [908, 860]...
