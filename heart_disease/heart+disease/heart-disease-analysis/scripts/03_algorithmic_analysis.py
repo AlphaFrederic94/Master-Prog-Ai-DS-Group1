@@ -122,3 +122,98 @@ class RiskPriorityQueue:
             sorted_patients.append(self.pop())
         return sorted_patients
 
+
+# -----------------------------------------------------------------------------
+# 3. Custom Data Structure: Similarity Graph
+# -----------------------------------------------------------------------------
+class SimilarityGraph:
+    """
+    Graph representing patient similarities. Nodes are patient IDs.
+    Edges exist between patients if their similarity exceeds a threshold.
+    """
+    def __init__(self):
+        self.adj_list = {} # dictionary mapping patient_id -> list of neighbors
+        self.nodes = {}    # map id -> PatientNode
+        
+    def add_node(self, patient):
+        self.nodes[patient.id] = patient
+        if patient.id not in self.adj_list:
+            self.adj_list[patient.id] = []
+            
+    def add_edge(self, id1, id2):
+        if id1 in self.adj_list and id2 in self.adj_list:
+            # Undirected graph
+            if id2 not in self.adj_list[id1]: self.adj_list[id1].append(id2)
+            if id1 not in self.adj_list[id2]: self.adj_list[id2].append(id1)
+
+    def calculate_similarity(self, p1, p2):
+        """
+        Calculate similarity between two patients using Euclidean distance 
+        (inverse) on normalized key features.
+        """
+        features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+        
+        sum_sq_diff = 0
+        for feat in features:
+            try:
+                v1 = float(p1.attributes.get(feat, 0))
+                v2 = float(p2.attributes.get(feat, 0))
+            except ValueError:
+                v1, v2 = 0.0, 0.0
+                
+            # Simple normalization implicitly by range would be better but keeping simple
+            sum_sq_diff += (v1 - v2) ** 2
+            
+        distance = math.sqrt(sum_sq_diff)
+        # Similarity is inverse of distance. Adding epsilon to avoid div/0
+        return 1 / (1 + distance)
+
+    def build_graph(self, threshold=0.015):
+        """
+        Connect nodes that are similar enough.
+        Note: O(N^2) complexity - acceptable for small datasets (~300-900 nodes).
+        """
+        ids = list(self.nodes.keys())
+        n = len(ids)
+        print(f"Building graph connections for {n} nodes...")
+        
+        edge_count = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                p1 = self.nodes[ids[i]]
+                p2 = self.nodes[ids[j]]
+                
+                sim = self.calculate_similarity(p1, p2)
+                if sim > threshold:
+                    self.add_edge(ids[i], ids[j])
+                    edge_count += 1
+        
+        print(f"Graph built with {edge_count} edges.")
+
+    def find_connected_components(self):
+        """
+        Use BFS to find clusters of similar patients.
+        Returns a list of sets, where each set is a cluster of patient IDs.
+        """
+        visited = set()
+        components = []
+        
+        for pid in self.adj_list:
+            if pid not in visited:
+                cluster = set()
+                queue = deque([pid])
+                visited.add(pid)
+                cluster.add(pid)
+                
+                while queue:
+                    curr = queue.popleft()
+                    for neighbor in self.adj_list[curr]:
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            cluster.add(neighbor)
+                            queue.append(neighbor)
+                
+                components.append(cluster)
+        
+        return components
+
