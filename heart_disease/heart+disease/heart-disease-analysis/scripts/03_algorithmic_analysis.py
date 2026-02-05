@@ -80,3 +80,45 @@ class PatientNode:
     def __repr__(self):
         return f"Patient(ID={self.id}, Risk={self.risk_score:.1f}, Age={self.attributes.get('age')})"
 
+
+# -----------------------------------------------------------------------------
+# 2. Custom Data Structure: Risk Priority Queue (Min-Heap)
+# -----------------------------------------------------------------------------
+class RiskPriorityQueue:
+    """
+    Priority Queue to manage patients by risk score.
+    Uses Python's heapq (Min-Heap) internally but simulates Max-Heap behavior
+    via the PatientNode's __lt__ method.
+    """
+    def __init__(self):
+        self.heap = []
+        self.size = 0
+        
+    def push(self, patient):
+        """Add a patient to the queue."""
+        heapq.heappush(self.heap, patient)
+        self.size += 1
+        
+    def pop(self):
+        """Remove and return the highest risk patient."""
+        if self.is_empty():
+            return None
+        self.size -= 1
+        return heapq.heappop(self.heap)
+        
+    def peek(self):
+        """View the highest risk patient without removing."""
+        if self.is_empty():
+            return None
+        return self.heap[0]
+    
+    def is_empty(self):
+        return self.size == 0
+    
+    def get_all_sorted(self):
+        """Return all patients sorted by risk (destructive)."""
+        sorted_patients = []
+        while not self.is_empty():
+            sorted_patients.append(self.pop())
+        return sorted_patients
+
