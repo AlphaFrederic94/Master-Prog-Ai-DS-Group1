@@ -217,3 +217,133 @@ class SimilarityGraph:
         
         return components
 
+# -----------------------------------------------------------------------------
+# Main Execution Pipeline
+# -----------------------------------------------------------------------------
+class AlgorithmicAnalyzer:
+    def __init__(self, base_dir):
+        self.base_dir = Path(base_dir)
+        self.data_path = self.base_dir / 'data' / 'processed' / 'heart_disease_combined.csv'
+        self.reports_dir = self.base_dir / 'reports'
+        self.reports_dir.mkdir(parents=True, exist_ok=True)
+        
+    def load_patients(self):
+        """Load CSV and convert to PatientNode objects."""
+        if not self.data_path.exists():
+            print(f"Error: Data file {self.data_path} not found.")
+            return []
+            
+        patients = []
+        try:
+            with open(self.data_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for idx, row in enumerate(reader):
+                    # Use row index as simple ID
+                    patients.append(PatientNode(idx, row))
+                    
+            print(f"✓ Loaded {len(patients)} patients from {self.data_path.name}")
+        except Exception as e:
+            print(f"Error loading data: {e}")
+            return []
+            
+        return patients
+
+    def run_analysis(self):
+        print("\n" + "⚙️ " + "="*58)
+        print("ALGORITHMIC COMPONENTS ANALYSIS")
+        print("="*60 + "\n")
+        
+        patients = self.load_patients()
+        if not patients: return
+        
+        # 1. Priority Queue Analysis (High Risk Identification)
+        print("1. RISK ANALYSIS (Priority Queue)")
+        print("-" * 40)
+        pq = RiskPriorityQueue()
+        for p in patients:
+            pq.push(p)
+            
+        top_n = 10
+        print(f"Top {top_n} Highest Risk Patients:")
+        
+        high_risk_patients = []
+        for i in range(top_n):
+            p = pq.pop()
+            if p:
+                high_risk_patients.append(p)
+                print(f"  {i+1}. ID: {p.id:03d} | Risk Score: {p.risk_score:.1f} | "
+                      f"Age: {p.attributes.get('age')} | CP: {p.attributes.get('cp')} | "
+                      f"Thal: {p.attributes.get('thal', '?')}")
+        
+        # 2. Graph Analysis (Cluster Detection)
+        print("\n2. SIMILARITY CLUSTERING (Graph Analysis)")
+        print("-" * 40)
+        graph = SimilarityGraph()
+        for p in patients:
+            graph.add_node(p)
+            
+        # Using a strict threshold to find meaningful small clusters
+        # Note: Threshold tuning depends on data scaling
+        graph.build_graph(threshold=0.04) 
+        
+        clusters = graph.find_connected_components()
+        print(f"Found {len(clusters)} connected components (clusters).")
+        
+        # Filter for non-trivial clusters
+        significant_clusters = [c for c in clusters if len(c) > 1]
+        significant_clusters.sort(key=len, reverse=True)
+        
+        print("\nLargest Clusters Detected:")
+        for i, cluster in enumerate(significant_clusters[:5]):
+            print(f"  Cluster {i+1}: {len(cluster)} patients")
+            # Analyze common trait in cluster - simple approach showing mean age
+            p_ids = list(cluster)
+            ages = []
+            for pid in p_ids:
+                try:
+                    ages.append(float(graph.nodes[pid].attributes['age']))
+                except ValueError:
+                    pass
+            mean_age = sum(ages) / len(ages) if ages else 0
+            print(f"    Average Age: {mean_age:.1f}")
+
+        # 3. Save Report
+        self.save_report(high_risk_patients, significant_clusters, graph)
+        print("\n" + "="*60)
+        print("✓ ANALYSIS COMPLETE!")
+        print("="*60 + "\n")
+
+    def save_report(self, high_risk, clusters, graph):
+        outfile = self.reports_dir / 'algorithmic_analysis_results.txt'
+        
+        with open(outfile, 'w') as f:
+            f.write("ALGORITHMIC ANALYSIS REPORT\n")
+            f.write("===========================\n\n")
+            
+            f.write("1. HIGH RISK PATIENTS (Priority Queue)\n")
+            f.write("------------------------------------\n")
+            f.write("Patients identified as high priority for triage based on risk factors:\n\n")
+            for p in high_risk:
+                f.write(f"ID {p.id:03d}: Risk Score {p.risk_score:.1f}\n")
+                f.write(f"   Details: Age {p.attributes.get('age')}, CP {p.attributes.get('cp')}, "
+                        f"Oldpeak {p.attributes.get('oldpeak')}, Thal {p.attributes.get('thal')}\n\n")
+            
+            f.write("\n2. PATIENT SIMILARITY CLUSTERS (Graph Theory)\n")
+            f.write("-------------------------------------------\n")
+            f.write(f"Total Clusters Found: {len(clusters) + (len(graph.nodes) - sum(len(c) for c in clusters))}\n") # adjust logic if needed
+            f.write("Significant clusters (size > 1):\n\n")
+            
+            for i, cluster in enumerate(clusters):
+                if i >= 10: break # limit report
+                p_ids = list(cluster)
+                f.write(f"Cluster {i+1} (Size: {len(cluster)}): {p_ids[:10]}...\n")
+
+        print(f"Report saved to: {outfile}")
+
+def main():
+    base_dir = Path(__file__).parent.parent
+    analyzer = AlgorithmicAnalyzer(base_dir)
+    analyzer.run_analysis()
+
+if __name__ == "__main__":
+    main()
