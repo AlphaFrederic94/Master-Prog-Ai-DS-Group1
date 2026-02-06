@@ -1,0 +1,43 @@
+======================================================================
+LOGISTIC REGRESSION MODEL - EVALUATION REPORT
+======================================================================
+
+Dataset Information:
+  Total samples: 303
+  Training samples: 242
+  Test samples: 61
+  Features: 13
+
+Performance Metrics:
+  Accuracy:  0.8689
+  Precision: 0.8125
+  Recall:    0.9286
+  F1-Score:  0.8667
+  ROC-AUC:   0.9513
+
+Cross-Validation:
+  5-Fold CV ROC-AUC: 0.8914 (+/- 0.0438)
+
+Confusion Matrix:
+  True Negatives:  27
+  False Positives: 6
+  False Negatives: 2
+  True Positives:  26
+
+Top 10 Most Important Features:
+        Feature  Coefficient  Abs_Coefficient
+             ca     1.119545         1.119545
+   thal_encoded     0.719719         0.719719
+            sex     0.648499         0.648499
+     cp_encoded     0.538757         0.538757
+          exang     0.370600         0.370600
+  slope_encoded     0.356808         0.356808
+        thalach    -0.355359         0.355359
+       trestbps     0.308300         0.308300
+restecg_encoded     0.226549         0.226549
+            fbs    -0.222324         0.222324
+
+Interpretation:
+  Positive coefficients increase disease probability
+  Negative coefficients decrease disease probability
+  Larger absolute values indicate stronger influence
