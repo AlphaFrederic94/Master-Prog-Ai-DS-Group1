@@ -1,0 +1,48 @@
+======================================================================
+DECISION TREE MODEL - EVALUATION REPORT
+======================================================================
+
+Dataset Information:
+  Total samples: 303
+  Training samples: 242
+  Test samples: 61
+  Features: 13
+
+Model Configuration:
+  Best parameters: {'criterion': 'gini', 'max_depth': 3, 'min_samples_leaf': 1, 'min_samples_split': 2}
+  Tree depth: 3
+  Number of leaves: 8
+
+Performance Metrics:
+  Accuracy:  0.8689
+  Precision: 0.8571
+  Recall:    0.8571
+  F1-Score:  0.8571
+  ROC-AUC:   0.8674
+
+Cross-Validation:
+  5-Fold CV ROC-AUC: 0.8656 (+/- 0.0427)
+
+Confusion Matrix:
+  True Negatives:  29
+  False Positives: 4
+  False Negatives: 4
+  True Positives:  24
+
+Top 10 Most Important Features:
+        Feature  Importance
+   thal_encoded    0.538681
+     cp_encoded    0.190074
+             ca    0.169538
+        oldpeak    0.065366
+            age    0.036340
+        thalach    0.000000
+           chol    0.000000
+       trestbps    0.000000
+restecg_encoded    0.000000
+  slope_encoded    0.000000
+
+Interpretation:
+  Feature importance shows which features the tree splits on most
+  Higher importance = more critical for classification decisions
+  Tree structure provides transparent decision rules
