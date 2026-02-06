@@ -1,0 +1,53 @@
+======================================================================
+MODEL COMPARISON SUMMARY
+======================================================================
+
+Dataset Information:
+  Test samples: 61
+  Features: 13
+  Models compared: 3
+
+Performance Metrics:
+----------------------------------------------------------------------
+              Model  Accuracy  Precision  Recall  F1-Score  ROC-AUC
+Logistic Regression    0.8689     0.8125  0.9286    0.8667   0.9513
+      Decision Tree    0.8689     0.8571  0.8571    0.8571   0.8674
+                SVM    0.8525     0.8276  0.8571    0.8421   0.9405
+
+Model Rankings (by ROC-AUC):
+----------------------------------------------------------------------
+1. Logistic Regression: 0.9513
+2. SVM: 0.9405
+3. Decision Tree: 0.8674
+
+
+Best Model:
+----------------------------------------------------------------------
+Model: Logistic Regression
+ROC-AUC: 0.9513
+
+
+Key Findings:
+----------------------------------------------------------------------
+1. Logistic Regression achieved the highest ROC-AUC, demonstrating
+   that linear relationships are strong predictors for this dataset.
+
+2. All models achieved >85% accuracy, indicating robust performance.
+
+3. Decision Tree provides the most interpretable model with clear
+   decision rules, while maintaining competitive performance.
+
+4. SVM with RBF kernel captured non-linear patterns effectively,
+   achieving the second-best ROC-AUC score.
+
+
+Custom Data Structures Impact:
+----------------------------------------------------------------------
+- CategoricalEncoder (Hash Table): Efficient O(1) encoding of
+  categorical features (cp, restecg, slope, thal)
+
+- FeatureGraph: Identified multicollinearity and ranked features
+  by centrality, validating Decision Tree feature importance
+
+- KDTree: Available for case-based reasoning and patient similarity
+  analysis (can be used for error analysis)
