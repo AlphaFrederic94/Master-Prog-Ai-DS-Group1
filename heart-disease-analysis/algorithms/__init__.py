@@ -4,7 +4,7 @@ Algorithms Module
 
 Graph algorithms and utilities for feature analysis.
 
-Author: Senior Data Scientist
+Author: NGANA NOAJunior Data Scientist
 Date: February 2026
 """
 

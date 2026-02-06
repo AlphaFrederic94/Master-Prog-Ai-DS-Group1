@@ -5,7 +5,7 @@ UCI Heart Disease Dataset - Data Processing Pipeline
 This script performs comprehensive data cleaning and preprocessing on the
 UCI Heart Disease dataset from four institutions.
 
-Author: Senior Data Scientist
+Author: Junior Data Scientist Group ICT University
 Date: January 2026
 """
 
