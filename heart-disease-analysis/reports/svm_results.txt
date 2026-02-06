@@ -1,0 +1,36 @@
+======================================================================
+SUPPORT VECTOR MACHINE MODEL - EVALUATION REPORT
+======================================================================
+
+Dataset Information:
+  Total samples: 303
+  Training samples: 242
+  Test samples: 61
+  Features: 13
+
+Model Configuration:
+  Best parameters: {'C': 1, 'class_weight': None, 'gamma': 0.01, 'kernel': 'rbf'}
+  Support vectors (Class 0): 68
+  Support vectors (Class 1): 67
+  Total support vectors: 135
+
+Performance Metrics:
+  Accuracy:  0.8525
+  Precision: 0.8276
+  Recall:    0.8571
+  F1-Score:  0.8421
+  ROC-AUC:   0.9405
+
+Cross-Validation:
+  5-Fold CV ROC-AUC: 0.8872 (+/- 0.0447)
+
+Confusion Matrix:
+  True Negatives:  28
+  False Positives: 5
+  False Negatives: 4
+  True Positives:  24
+
+Interpretation:
+  SVM finds optimal hyperplane that maximizes margin between classes
+  Support vectors are the critical data points defining the boundary
+  Kernel trick enables non-linear decision boundaries
